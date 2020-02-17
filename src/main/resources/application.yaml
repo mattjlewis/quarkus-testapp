@@ -1,0 +1,10 @@
+quarkus:
+  datasource:
+    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'DatabaseSetup.ddl'
+    driver: org.h2.Driver
+    username: sa
+    password: sa
+quarkus.smallrye-jwt.enabled: true
+mp.jwt.verify.issuer: "https://localhost:9443/oauth2/token"
+# Note can be any URI with a valid scheme
+mp.jwt.verify.publickey.location: "wso2carbon.pub"
