@@ -8,6 +8,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
@@ -59,14 +60,23 @@ public class DepartmentService implements DepartmentServiceInterface {
 	@Transactional(Transactional.TxType.REQUIRES_NEW)
 	public Department update(final Department department) {
 		//return BaseEntityRepository.update(entityManager, department.getId(), department);
-		Department current = BaseEntityRepository.findById(entityManager, Department.class, department.getId());
-		
+		Department current = entityManager.find(Department.class, department.getId(), LockModeType.OPTIMISTIC);
+
+		if (current == null) {
+			throw new EntityNotFoundException("Department not found with id " + department.getId());
+		}
+
+		System.out.println("current version: " + current.getVersion());
+		System.out.println("department version: " + department.getVersion());
+
 		current.setLocation(department.getLocation());
 		current.setName(department.getName());
 		current.setLastUpdated(new Date());
-		
+		current.setVersion(department.getVersion());
+
 		// Do something about the employees?
-		
+		//current.setEmployees(department.getEmployees());
+
 		return current;
 	}
 
@@ -79,7 +89,7 @@ public class DepartmentService implements DepartmentServiceInterface {
 	@Override
 	@Transactional(Transactional.TxType.REQUIRES_NEW)
 	public void addEmploye(int departmentId, Employee employee) {
-		Department dept = entityManager.find(Department.class, Integer.valueOf(departmentId));
+		Department dept = entityManager.find(Department.class, Integer.valueOf(departmentId), LockModeType.OPTIMISTIC);
 		if (dept == null) {
 			throw new EntityNotFoundException("Department not found for id " + departmentId);
 		}
@@ -94,7 +104,8 @@ public class DepartmentService implements DepartmentServiceInterface {
 	@Override
 	@Transactional(Transactional.TxType.REQUIRES_NEW)
 	public void removeEmployee(int departmentId, int employeeId) {
-		Department dept = entityManager.find(Department.class, Integer.valueOf(departmentId));
+		Department dept = entityManager.find(Department.class, Integer.valueOf(departmentId),
+				LockModeType.OPTIMISTIC_FORCE_INCREMENT);
 		if (dept == null) {
 			throw new EntityNotFoundException("Department not found for id " + departmentId);
 		}

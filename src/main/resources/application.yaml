@@ -1,10 +1,15 @@
 quarkus:
   datasource:
-    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'DatabaseSetup.ddl'
+#    url: jdbc:h2:~/devel/testapp-database/database;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:tcp://localhost/~/devel/testapp-database/database;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver: org.h2.Driver
-    username: sa
-    password: sa
+    username: testapp
+    password: testapp
 quarkus.smallrye-jwt.enabled: true
 mp.jwt.verify.issuer: "https://localhost:9443/oauth2/token"
 # Note can be any URI with a valid scheme
 mp.jwt.verify.publickey.location: "wso2carbon.pub"
+"%test":
+  quarkus:
+    datasource:
+      url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'DatabaseSetup.ddl'

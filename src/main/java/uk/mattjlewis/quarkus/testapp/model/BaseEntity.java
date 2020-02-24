@@ -15,7 +15,7 @@ import javax.persistence.Version;
 @MappedSuperclass
 @Access(AccessType.FIELD)
 public class BaseEntity {
-	@Column(name = "VERSION", updatable = false)
+	@Column(name = "VERSION")
 	@Version
 	private Integer version;
 
@@ -23,12 +23,14 @@ public class BaseEntity {
 	@Column(name = "CREATED", nullable = false)
 	@Basic(optional = false)
 	@JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+	//@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
 	private Date created;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "LAST_UPDATED", nullable = false)
 	@Basic(optional = false)
 	@JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+	//@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
 	private Date lastUpdated;
 
 	@Column(name = "LAST_UPDATED_BY", nullable = true)

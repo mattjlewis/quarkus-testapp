@@ -87,8 +87,9 @@ public class DepartmentResource {
 					schema = @Schema(type = SchemaType.OBJECT, implementation = Department.class)))
 	// FIXME I don't think PermitAll should be required here
 	@PermitAll
-	public Response update(@Context UriInfo uriInfo, @Valid Department department) {
+	public Response update(@Context UriInfo uriInfo, @PathParam("id") int id, @Valid Department department) {
 		System.out.println(">>> update()");
+		department.setId(Integer.valueOf(id));
 		List<Employee> employees = department.getEmployees();
 		if (employees != null && !employees.isEmpty()) {
 			employees.forEach(emp -> emp.setDepartment(department));
