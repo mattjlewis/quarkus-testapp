@@ -26,14 +26,17 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import io.quarkus.test.common.http.TestHTTPResource;
 import io.quarkus.test.junit.QuarkusTest;
 import uk.mattjlewis.quarkus.testapp.model.Department;
 import uk.mattjlewis.quarkus.testapp.model.Employee;
 
 @QuarkusTest
-@SuppressWarnings("static-method")
 public class DepartmentResourceTest {
 	private static final String DEPARTMENT_PATH = "department";
+	
+	@TestHTTPResource("rest")
+	URI baseUri;
 
 	@PersistenceContext
 	EntityManager entityManager;
@@ -59,7 +62,7 @@ public class DepartmentResourceTest {
 		Client client = ClientBuilder.newClient();
 		// Required to use PATCH when using the Jersey REST client
 		client.property(HttpUrlConnectorProvider.SET_METHOD_WORKAROUND, Boolean.TRUE);
-		WebTarget root = client.target("http://localhost:8081").path("rest");
+		WebTarget root = client.target(baseUri);
 
 		// Create a department with employees
 		List<Employee> employees = Arrays.asList(new Employee("Matt", "matt@test.org", "Coffee"),
@@ -176,7 +179,7 @@ public class DepartmentResourceTest {
 		Client client = ClientBuilder.newClient();
 		// Required to use PATCH when using the Jersey REST client
 		client.property(HttpUrlConnectorProvider.SET_METHOD_WORKAROUND, Boolean.TRUE);
-		WebTarget root = client.target("http://localhost:8081").path("rest");
+		WebTarget root = client.target(baseUri);
 
 		// Should trigger bean validation failure
 		Department dept = new Department("012345678901234567890123456789", "London");

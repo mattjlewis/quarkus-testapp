@@ -5,11 +5,62 @@ quarkus:
     driver: org.h2.Driver
     username: testapp
     password: testapp
-quarkus.smallrye-jwt.enabled: true
-mp.jwt.verify.issuer: "https://localhost:9443/oauth2/token"
-# Note can be any URI with a valid scheme
-mp.jwt.verify.publickey.location: "wso2carbon.pub"
+  smallrye-jwt:
+    enabled: true
+  native:
+    builder-image: "quay.io/quarkus/ubi-quarkus-native-image:19.3.1-java11"
+  oidc:
+    enabled: true
+    application-type: "service"
+    auth-server-url: "https://localhost:9443/oauth2"
+    #auth-server-url: "http://localhost:8280/auth/realms/master/protocol/openid-connect"
+    introspection-path: "/introspect"
+    #introspection-path: "/token/introspect"
+    jwks-path: "/jwks"
+    #jwks-path: "/certs"
+    public-key: "publicKey.pem"
+    client-id: "B9719QqRCfG2zR0qEyTYLU0aJ8ka"
+    #client-id: "testapp"
+    token:
+      issuer: "https://localhost:9443/oauth2/token"
+      #issuer: "http://localhost:8280/auth/realms/master"
+      audience: "https://localhost:9443"
+    credentials:
+      secret: "fuywErYqnwUpBbpti2fyPyvfBcAa"
+      #secret: "c14ab0b9-104d-45cd-8c27-80a64cb4a61e"
+    authentication:
+      redirect-path: "/oidc/redirect"
+      scopes: "openid"
+
+mp:
+  jwt:
+    verify:
+      issuer: "https://localhost:9443/oauth2/token"
+      #issuer: "http://localhost:8280/auth/realms/master"
+      # Note can be any URI with a valid scheme
+      publickey:
+        location: "publicKey.pem"
+
 "%test":
   quarkus:
     datasource:
-      url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'DatabaseSetup.ddl'
+      url: "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'DatabaseSetup.ddl'"
+    # Switch from JWT to HTTP Basic Auth for unit tests
+    http:
+      auth:
+        basic: true
+    smallrye-jwt:
+      enabled: false
+    oidc:
+      enabled: false
+    security:
+      users:
+        embedded:
+          enabled: true
+          plain-text: true
+          users:
+            admin: "password"
+            user1: "password"
+          roles:
+            admin: "Admin"
+            user1: "User"

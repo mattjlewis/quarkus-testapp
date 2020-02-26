@@ -81,24 +81,14 @@
 		</dependency>
 		<dependency>
 			<groupId>io.quarkus</groupId>
-			<artifactId>quarkus-smallrye-fault-tolerance</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-smallrye-jwt</artifactId>
 		</dependency>
+		<!--
 		<dependency>
 			<groupId>io.quarkus</groupId>
-			<artifactId>quarkus-smallrye-health</artifactId>
+			<artifactId>quarkus-oidc</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>io.quarkus</groupId>
-			<artifactId>quarkus-smallrye-metrics</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.quarkus</groupId>
-			<artifactId>quarkus-smallrye-opentracing</artifactId>
-		</dependency>
+		-->
 		<dependency>
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-jsonp</artifactId>
@@ -115,10 +105,23 @@
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-smallrye-openapi</artifactId>
 		</dependency>
+		<!-- Non-functional monitoring dependencies -->
 		<!--
 		<dependency>
 			<groupId>io.quarkus</groupId>
-			<artifactId>quarkus-oidc</artifactId>
+			<artifactId>quarkus-smallrye-fault-tolerance</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-smallrye-health</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-smallrye-metrics</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-smallrye-opentracing</artifactId>
 		</dependency>
 		-->
 		
@@ -147,6 +150,11 @@
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-moxy</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-elytron-security-properties-file</artifactId>
+			<!-- <scope>test</scope> -->
 		</dependency>
 	</dependencies>
 	

@@ -16,14 +16,15 @@ import uk.mattjlewis.quarkus.testapp.services.rest.exception.TransactionRollback
 
 @ApplicationScoped
 @ApplicationPath("/rest")
-@LoginConfig(authMethod = "MP-JWT")
+@LoginConfig(authMethod = "MP-JWT", realmName = "MPRealm")
 public class TestApplicationConfig extends Application {
 	@Override
 	public Set<Class<?>> getClasses() {
 		Set<Class<?>> classes = new HashSet<>();
 
 		// Add resources (alphabetical)
-		classes.addAll(Set.of(DepartmentResource.class, HelloWorldResource.class, ProtectedResource.class));
+		classes.addAll(Set.of(DepartmentResource.class, HelloWorldResource.class, ProtectedResource.class,
+				SecureResource.class));
 		// Add exception mappers (alphabetical)
 		classes.addAll(Set.of(EntityNotFoundMapper.class, NoResultMapper.class, PersistenceExceptionMapper.class,
 				TransactionRollbackMapper.class));

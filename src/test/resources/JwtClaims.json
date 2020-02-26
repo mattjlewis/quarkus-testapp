@@ -1,0 +1,15 @@
+{
+    "sub": "user1",
+    "iss": "https://localhost:9443/oauth2/token",
+    "groups": [
+        "User",
+        "Tester"
+    ],
+    "aud": "using-jwt-rbac",
+	"scope": "openid",
+    "name": "user1",
+    "jti": "a-123",
+    "upn": "user1@test.org",
+    "preferred_username": "user1",
+    "birthdate": "2001-07-13"
+}
