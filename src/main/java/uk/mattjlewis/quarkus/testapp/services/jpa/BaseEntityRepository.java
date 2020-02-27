@@ -49,6 +49,7 @@ public class BaseEntityRepository {
 		return Optional.ofNullable(entityManager.find(entityClass, id));
 	}
 	
+	/*
 	public static <E extends BaseEntity, ID> E update(EntityManager entityManager, ID id, E entity) {
 		BaseEntity current = findById(entityManager, entity.getClass(), id);
 		
@@ -57,6 +58,7 @@ public class BaseEntityRepository {
 		
 		return entityManager.merge(entity);
 	}
+	*/
 
 	public static <E, ID> void delete(EntityManager entityManager, Class<E> entityClass, ID id) {
 		entityManager.remove(findById(entityManager, entityClass, id));

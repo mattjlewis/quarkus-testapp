@@ -7,8 +7,6 @@ quarkus:
     password: testapp
   smallrye-jwt:
     enabled: true
-  native:
-    builder-image: "quay.io/quarkus/ubi-quarkus-native-image:19.3.1-java11"
   oidc:
     enabled: true
     application-type: "service"
@@ -31,6 +29,8 @@ quarkus:
     authentication:
       redirect-path: "/oidc/redirect"
       scopes: "openid"
+  native:
+    builder-image: "quay.io/quarkus/ubi-quarkus-native-image:19.3.1-java11"
 
 mp:
   jwt:
