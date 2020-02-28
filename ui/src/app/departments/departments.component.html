@@ -1,0 +1,23 @@
+<h2>Departments</h2>
+
+<ul class="departments">
+    <li *ngFor="let department of departments">
+        <a routerLink="/department/{{department.id}}">
+            <span class="badge">{{department.id}}</span> {{department.name}} - {{department.location}}
+        </a>
+        <button class="delete" title="Delete" (click)="delete(department)">x</button>
+    </li>
+</ul>
+
+<div>
+    <div>
+        <label for="name">Name:</label>
+        <input id="name" #departmentName placeholder="Name" />
+    </div>
+    <div>
+        <label for="location">Location:</label>
+        <input id="location" #departmentLocation placeholder="Location" />
+    </div>
+    <!-- (click) passes input value to add() and then clears the input -->
+    <button (click)="add(departmentName.value, departmentLocation.value); departmentName.value=''; departmentLocation.value=''">Add</button>
+</div>

@@ -1,0 +1,17 @@
+<div *ngIf="department">
+
+    <h2>{{department.name}} Details</h2>
+    <div><span>Id: </span>{{department.id}}</div>
+    <div>
+        <label for="name">Name:</label>
+        <input id="name" [(ngModel)]="department.name" placeholder="Name" />
+    </div>
+    <div>
+        <label for="location">Location:</label>
+        <input id="location" [(ngModel)]="department.location" placeholder="Location" />
+    </div>
+
+</div>
+
+<button (click)="save()">Save</button>
+<button (click)="goBack()">Go back</button>
