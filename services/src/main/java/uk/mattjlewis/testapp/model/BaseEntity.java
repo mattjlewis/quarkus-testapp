@@ -1,4 +1,4 @@
-package uk.mattjlewis.quarkus.testapp.model;
+package uk.mattjlewis.testapp.model;
 
 import java.util.Date;
 

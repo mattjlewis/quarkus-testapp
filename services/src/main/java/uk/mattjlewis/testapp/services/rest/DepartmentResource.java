@@ -1,4 +1,4 @@
-package uk.mattjlewis.quarkus.testapp.services.rest;
+package uk.mattjlewis.testapp.services.rest;
 
 import java.net.URI;
 import java.util.List;
@@ -10,8 +10,8 @@ import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -27,9 +27,9 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
-import uk.mattjlewis.quarkus.testapp.model.Department;
-import uk.mattjlewis.quarkus.testapp.model.Employee;
-import uk.mattjlewis.quarkus.testapp.services.service.DepartmentServiceInterface;
+import uk.mattjlewis.testapp.model.Department;
+import uk.mattjlewis.testapp.model.Employee;
+import uk.mattjlewis.testapp.services.service.DepartmentServiceInterface;
 
 @Path("department")
 @Produces(MediaType.APPLICATION_JSON)
@@ -77,8 +77,7 @@ public class DepartmentResource {
 		return Response.ok(departmentService.get(id)).build();
 	}
 
-	@PATCH
-	@Path("{id}")
+	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Update a department")
 	@APIResponse(responseCode = "200",
@@ -87,9 +86,8 @@ public class DepartmentResource {
 					schema = @Schema(type = SchemaType.OBJECT, implementation = Department.class)))
 	// FIXME I don't think PermitAll should be required here
 	@PermitAll
-	public Response update(@Context UriInfo uriInfo, @PathParam("id") int id, @Valid Department department) {
+	public Response update(@Context UriInfo uriInfo, @Valid Department department) {
 		System.out.println(">>> update()");
-		department.setId(Integer.valueOf(id));
 		List<Employee> employees = department.getEmployees();
 		if (employees != null && !employees.isEmpty()) {
 			employees.forEach(emp -> emp.setDepartment(department));
@@ -100,8 +98,8 @@ public class DepartmentResource {
 
 	@DELETE
 	@Path("{id}")
-	public Response deleteDepartment(@PathParam("id") int id) {
-		System.out.println(">>> update()");
+	public Response delete(@PathParam("id") int id) {
+		System.out.println(">>> delete()");
 
 		departmentService.delete(id);
 		return Response.noContent().build();
@@ -113,6 +111,7 @@ public class DepartmentResource {
 	// FIXME I don't think PermitAll should be required here
 	@PermitAll
 	public Response addEmploye(@PathParam("id") int departmentId, @Valid Employee employee) {
+		System.out.println(">>> addEmploye()");
 		departmentService.addEmploye(departmentId, employee);
 		return Response.noContent().build();
 	}
@@ -122,6 +121,7 @@ public class DepartmentResource {
 	// FIXME I don't think PermitAll should be required here
 	@PermitAll
 	public Response removeEmployee(@PathParam("did") int departmentId, @PathParam("eid") int employeeId) {
+		System.out.println(">>> removeEmployee()");
 		departmentService.removeEmployee(departmentId, employeeId);
 		return Response.noContent().build();
 	}

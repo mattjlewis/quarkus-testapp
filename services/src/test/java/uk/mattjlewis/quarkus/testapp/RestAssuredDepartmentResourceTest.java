@@ -27,8 +27,8 @@ import io.restassured.config.ObjectMapperConfig;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.path.json.mapper.factory.DefaultJackson2ObjectMapperFactory;
 import io.restassured.response.Response;
-import uk.mattjlewis.quarkus.testapp.model.Department;
-import uk.mattjlewis.quarkus.testapp.model.Employee;
+import uk.mattjlewis.testapp.model.Department;
+import uk.mattjlewis.testapp.model.Employee;
 
 @QuarkusTest
 @SuppressWarnings("static-method")
@@ -110,8 +110,8 @@ public class RestAssuredDepartmentResourceTest {
 		// Update the department
 		found_dept.setName(dept.getName() + " - updated");
 		System.out.println("Calling update...");
-		response = given().body(found_dept).pathParam("deptId", created_dept.getId())
-				.contentType(MediaType.APPLICATION_JSON).when().basePath("rest").patch(DEPARTMENT_PATH + "/{deptId}");
+		response = given().body(found_dept)
+				.contentType(MediaType.APPLICATION_JSON).when().basePath("rest").put(DEPARTMENT_PATH);
 		System.out.println("Called update.");
 		response.then().statusCode(HttpURLConnection.HTTP_OK);
 		System.out.println("After status check");

@@ -1,4 +1,12 @@
 quarkus:
+  http:
+    port: 9090
+    cors:
+      ~: true
+      origins: "http://localhost:9090,http://localhost:4200,http://localhost:9091"
+      methods: "GET,PUT,POST,PATCH,DELETE,OPTIONS,HEAD"
+      headers: "Content-Type,X-Custom"
+      exposed-headers: "Content-Disposition"
   datasource:
 #    url: jdbc:h2:~/devel/testapp-database/database;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     url: jdbc:h2:tcp://localhost/~/devel/testapp-database/database;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
@@ -62,5 +70,5 @@ mp:
             admin: "password"
             user1: "password"
           roles:
-            admin: "Admin"
-            user1: "User"
+            admin: "Application/Admin"
+            user1: "Application/User"

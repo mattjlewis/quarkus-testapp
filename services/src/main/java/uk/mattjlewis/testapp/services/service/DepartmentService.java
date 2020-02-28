@@ -1,4 +1,4 @@
-package uk.mattjlewis.quarkus.testapp.services.service;
+package uk.mattjlewis.testapp.services.service;
 
 import java.util.Date;
 import java.util.List;
@@ -12,9 +12,9 @@ import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
-import uk.mattjlewis.quarkus.testapp.model.Department;
-import uk.mattjlewis.quarkus.testapp.model.Employee;
-import uk.mattjlewis.quarkus.testapp.services.jpa.BaseEntityRepository;
+import uk.mattjlewis.testapp.model.Department;
+import uk.mattjlewis.testapp.model.Employee;
+import uk.mattjlewis.testapp.services.jpa.BaseEntityRepository;
 
 @ApplicationScoped
 @Default

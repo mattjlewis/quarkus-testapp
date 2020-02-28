@@ -28,13 +28,13 @@ import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.common.http.TestHTTPResource;
 import io.quarkus.test.junit.QuarkusTest;
-import uk.mattjlewis.quarkus.testapp.model.Department;
-import uk.mattjlewis.quarkus.testapp.model.Employee;
+import uk.mattjlewis.testapp.model.Department;
+import uk.mattjlewis.testapp.model.Employee;
 
 @QuarkusTest
 public class DepartmentResourceTest {
 	private static final String DEPARTMENT_PATH = "department";
-	
+
 	@TestHTTPResource("rest")
 	URI baseUri;
 
@@ -45,16 +45,18 @@ public class DepartmentResourceTest {
 	public void cleanupBefore() {
 		cleanup();
 	}
-	
+
 	@AfterEach
 	public void cleanupAfter() {
 		cleanup();
 	}
-	
+
 	@Transactional
 	public void cleanup() {
-		System.out.println("Deleted " + entityManager.createQuery("DELETE FROM Employee").executeUpdate() + " Employees");
-		System.out.println("Deleted " + entityManager.createQuery("DELETE FROM Department").executeUpdate() + " Departments");
+		System.out
+				.println("Deleted " + entityManager.createQuery("DELETE FROM Employee").executeUpdate() + " Employees");
+		System.out.println(
+				"Deleted " + entityManager.createQuery("DELETE FROM Department").executeUpdate() + " Departments");
 	}
 
 	@Test
@@ -119,9 +121,8 @@ public class DepartmentResourceTest {
 		// Update the department
 		found_dept.setName(dept.getName() + " - updated");
 		try {
-			Department updated_dept = root.path(DEPARTMENT_PATH).path(found_dept.getId().toString())
-					.request(MediaType.APPLICATION_JSON)
-					.method(HttpMethod.PATCH, Entity.json(found_dept), Department.class);
+			Department updated_dept = root.path(DEPARTMENT_PATH).request(MediaType.APPLICATION_JSON)
+					.method(HttpMethod.PUT, Entity.json(found_dept), Department.class);
 			assertNotNull(updated_dept);
 			assertEquals(created_dept.getName() + " - updated", updated_dept.getName());
 			assertEquals(created_dept.getVersion().intValue() + 1, updated_dept.getVersion().intValue());
@@ -150,9 +151,8 @@ public class DepartmentResourceTest {
 		// Update the department again
 		found_dept.setName(dept.getName());
 		try {
-			Department updated_dept = root.path(DEPARTMENT_PATH).path(found_dept.getId().toString())
-					.request(MediaType.APPLICATION_JSON)
-					.method(HttpMethod.PATCH, Entity.json(found_dept), Department.class);
+			Department updated_dept = root.path(DEPARTMENT_PATH).request(MediaType.APPLICATION_JSON)
+					.method(HttpMethod.PUT, Entity.json(found_dept), Department.class);
 			assertNotNull(updated_dept);
 			assertEquals(created_dept.getName(), updated_dept.getName());
 			assertEquals(created_dept.getVersion().intValue() + 2, updated_dept.getVersion().intValue());
@@ -174,7 +174,7 @@ public class DepartmentResourceTest {
 			return;
 		}
 	}
-	
+
 	public void validationErrors() {
 		Client client = ClientBuilder.newClient();
 		// Required to use PATCH when using the Jersey REST client

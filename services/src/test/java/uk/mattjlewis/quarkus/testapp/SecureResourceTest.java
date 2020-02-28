@@ -49,13 +49,13 @@ public class SecureResourceTest {
 			assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), response.getStatus());
 		}
 
-		given().auth().preemptive().basic(ADMIN_USERNAME, ADMIN_PASSWORD).when().basePath("rest/secured").get("admin")
-				.then().statusCode(Response.Status.OK.getStatusCode());
-
 		try (Response response = secured.path("admin").request(MediaType.TEXT_PLAIN)
 				.header(HttpBasicAuthUtil.BASIC_AUTH_HEADER_NAME, ADMIN_BASIC_AUTH_TOKEN).get()) {
 			assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 		}
+
+		given().auth().preemptive().basic(ADMIN_USERNAME, ADMIN_PASSWORD).when().basePath("rest/secured").get("admin")
+				.then().statusCode(Response.Status.OK.getStatusCode());
 
 		try (Response response = secured.path("admin").request(MediaType.TEXT_PLAIN)
 				.header(HttpBasicAuthUtil.BASIC_AUTH_HEADER_NAME, USER1_BASIC_AUTH_TOKEN).get()) {

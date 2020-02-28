@@ -1,9 +1,9 @@
-package uk.mattjlewis.quarkus.testapp.services.service;
+package uk.mattjlewis.testapp.services.service;
 
 import java.util.List;
 
-import uk.mattjlewis.quarkus.testapp.model.Department;
-import uk.mattjlewis.quarkus.testapp.model.Employee;
+import uk.mattjlewis.testapp.model.Department;
+import uk.mattjlewis.testapp.model.Employee;
 
 public interface DepartmentServiceInterface {
 	String getImplementation();
