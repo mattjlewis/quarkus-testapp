@@ -1,4 +1,4 @@
-package uk.mattjlewis.quarkus.testapp;
+package uk.mattjlewis.testapp;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;

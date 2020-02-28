@@ -1,4 +1,4 @@
-package uk.mattjlewis.quarkus.testapp;
+package uk.mattjlewis.testapp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -9,7 +9,7 @@ import java.security.PrivateKey;
 
 import org.junit.jupiter.api.Test;
 
-import uk.mattjlewis.quarkus.testapp.util.PrivateKeyUtils;
+import uk.mattjlewis.testapp.util.PrivateKeyUtils;
 
 @SuppressWarnings("static-method")
 public class ReadPrivateKeyTest {

@@ -1,4 +1,4 @@
-package uk.mattjlewis.quarkus.testapp.util;
+package uk.mattjlewis.testapp.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

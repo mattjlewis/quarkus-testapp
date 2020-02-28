@@ -1,4 +1,4 @@
-package uk.mattjlewis.quarkus.testapp.util;
+package uk.mattjlewis.testapp.util;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;

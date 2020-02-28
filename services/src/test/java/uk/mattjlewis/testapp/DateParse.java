@@ -1,4 +1,4 @@
-package uk.mattjlewis.quarkus.testapp;
+package uk.mattjlewis.testapp;
 
 import java.text.DateFormat;
 import java.text.ParseException;

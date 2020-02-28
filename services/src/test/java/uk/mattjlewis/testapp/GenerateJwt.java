@@ -1,13 +1,13 @@
-package uk.mattjlewis.quarkus.testapp;
+package uk.mattjlewis.testapp;
 
 import java.security.PrivateKey;
 
-import uk.mattjlewis.quarkus.testapp.util.PrivateKeyUtils;
-import uk.mattjlewis.quarkus.testapp.util.TokenUtils;
+import uk.mattjlewis.testapp.util.PrivateKeyUtils;
+import uk.mattjlewis.testapp.util.TokenUtils;
 
 /**
  * A simple utility class to generate and print a JWT token string to stdout. Can be run with: mvn exec:java
- * -Dexec.mainClass=uk.mattjlewis.quarkus.testapp.GenerateJwt -Dexec.classpathScope=test
+ * -Dexec.mainClass=uk.mattjlewis.testapp.GenerateJwt -Dexec.classpathScope=test
  */
 public class GenerateJwt {
 	/**
