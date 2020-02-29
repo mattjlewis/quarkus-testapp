@@ -28,7 +28,7 @@ public class DepartmentService implements DepartmentServiceInterface {
 	}
 
 	@Override
-	@Transactional(Transactional.TxType.REQUIRES_NEW)
+	@Transactional(Transactional.TxType.REQUIRED)
 	public Department create(final Department department) {
 		// Make sure the many to one relationship is set
 		if (department.getEmployees() != null) {
@@ -64,7 +64,7 @@ public class DepartmentService implements DepartmentServiceInterface {
 	}
 
 	@Override
-	@Transactional(Transactional.TxType.REQUIRES_NEW)
+	@Transactional(Transactional.TxType.REQUIRED)
 	public Department update(final Department department) {
 		//return BaseEntityRepository.update(entityManager, department.getId(), department);
 		Department current = entityManager.find(Department.class, department.getId(), LockModeType.OPTIMISTIC);
@@ -88,13 +88,13 @@ public class DepartmentService implements DepartmentServiceInterface {
 	}
 
 	@Override
-	@Transactional(Transactional.TxType.REQUIRES_NEW)
+	@Transactional(Transactional.TxType.REQUIRED)
 	public void delete(final int id) {
 		BaseEntityRepository.delete(entityManager, Department.class, Integer.valueOf(id));
 	}
 
 	@Override
-	@Transactional(Transactional.TxType.REQUIRES_NEW)
+	@Transactional(Transactional.TxType.REQUIRED)
 	public void addEmploye(int departmentId, Employee employee) {
 		Department dept = entityManager.find(Department.class, Integer.valueOf(departmentId), LockModeType.OPTIMISTIC);
 		if (dept == null) {
@@ -109,7 +109,27 @@ public class DepartmentService implements DepartmentServiceInterface {
 	}
 
 	@Override
-	@Transactional(Transactional.TxType.REQUIRES_NEW)
+	@Transactional(Transactional.TxType.REQUIRED)
+	public void updateEmployee(int departmentId, Employee employee) {
+		Department dept = entityManager.find(Department.class, Integer.valueOf(departmentId),
+				LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+		if (dept == null) {
+			throw new EntityNotFoundException("Department not found for id " + departmentId);
+		}
+		Optional<Employee> opt_emp = dept.getEmployees().stream().filter(emp -> emp.getId().equals(employee.getId()))
+				.findFirst();
+		Employee emp = opt_emp.orElseThrow(() -> new EntityNotFoundException(
+				"No such Employee with id " + employee.getId() + " in department " + departmentId));
+		
+		emp.setEmailAddress(employee.getEmailAddress());
+		emp.setFavouriteDrink(employee.getFavouriteDrink());
+		emp.setName(employee.getName());
+
+		dept.setLastUpdated(new Date());
+	}
+
+	@Override
+	@Transactional(Transactional.TxType.REQUIRED)
 	public void removeEmployee(int departmentId, int employeeId) {
 		Department dept = entityManager.find(Department.class, Integer.valueOf(departmentId),
 				LockModeType.OPTIMISTIC_FORCE_INCREMENT);

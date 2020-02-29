@@ -120,16 +120,9 @@ public class DepartmentResourceTest {
 
 		// Update the department
 		found_dept.setName(dept.getName() + " - updated");
-		try {
-			Department updated_dept = root.path(DEPARTMENT_PATH).request(MediaType.APPLICATION_JSON)
-					.method(HttpMethod.PUT, Entity.json(found_dept), Department.class);
-			assertNotNull(updated_dept);
-			assertEquals(created_dept.getName() + " - updated", updated_dept.getName());
-			assertEquals(created_dept.getVersion().intValue() + 1, updated_dept.getVersion().intValue());
-			System.out.println("Version after update #1: " + updated_dept.getVersion());
-			found_dept.setVersion(updated_dept.getVersion());
-		} catch (WebApplicationException e) {
-			fail("Unexpected response status: " + e.getResponse().getStatus());
+		try (Response response = root.path(DEPARTMENT_PATH).request(MediaType.APPLICATION_JSON)
+				.put(Entity.json(found_dept))) {
+			assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
 		}
 
 		// Fetch the department to validate it was updated
@@ -150,15 +143,9 @@ public class DepartmentResourceTest {
 
 		// Update the department again
 		found_dept.setName(dept.getName());
-		try {
-			Department updated_dept = root.path(DEPARTMENT_PATH).request(MediaType.APPLICATION_JSON)
-					.method(HttpMethod.PUT, Entity.json(found_dept), Department.class);
-			assertNotNull(updated_dept);
-			assertEquals(created_dept.getName(), updated_dept.getName());
-			assertEquals(created_dept.getVersion().intValue() + 2, updated_dept.getVersion().intValue());
-			System.out.println("Version after update #2: " + updated_dept.getVersion());
-		} catch (WebApplicationException e) {
-			fail("Unexpected response status: " + e.getResponse().getStatus());
+		try (Response response = root.path(DEPARTMENT_PATH).request(MediaType.APPLICATION_JSON)
+				.put(Entity.json(found_dept))) {
+			assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
 		}
 
 		// Make sure the department was updated

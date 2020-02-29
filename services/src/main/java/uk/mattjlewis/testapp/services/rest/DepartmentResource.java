@@ -3,7 +3,6 @@ package uk.mattjlewis.testapp.services.rest;
 import java.net.URI;
 import java.util.List;
 
-import javax.annotation.security.PermitAll;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -42,12 +41,7 @@ public class DepartmentResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Create a new department")
-	@APIResponse(responseCode = "201",
-			description = "The created department",
-			content = @Content(mediaType = MediaType.APPLICATION_JSON,
-					schema = @Schema(type = SchemaType.OBJECT, implementation = Department.class)))
-	// FIXME I don't think PermitAll should be required here
-	@PermitAll
+	@APIResponse(responseCode = "201", description = "The created department")
 	public Response create(@Context UriInfo uriInfo,
 			@Valid @Parameter(schema = @Schema(implementation = Department.class)) Department department) {
 		System.out.format(">>> create(%s)%n", department.getName());
@@ -78,10 +72,8 @@ public class DepartmentResource {
 	@APIResponse(responseCode = "200",
 			description = "The department instance",
 			content = @Content(mediaType = MediaType.APPLICATION_JSON,
-					schema = @Schema(type = SchemaType.OBJECT, implementation = Department.class)))
+					schema = @Schema(implementation = Department.class)))
 	@APIResponse(responseCode = "404", description = "If the department could not be found")
-	// FIXME I don't think PermitAll should be required here
-	@PermitAll
 	public Response get(@PathParam("id") int id) {
 		System.out.format(">>> get(%d)%n", Integer.valueOf(id));
 		return Response.ok(departmentService.get(id)).build();
@@ -90,22 +82,16 @@ public class DepartmentResource {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Update a department")
-	@APIResponse(responseCode = "200",
-			description = "The department instance",
-			content = @Content(mediaType = MediaType.APPLICATION_JSON,
-					schema = @Schema(type = SchemaType.OBJECT, implementation = Department.class)))
+	@APIResponse(responseCode = "204", description = "If the department was successfully updated")
 	@APIResponse(responseCode = "404", description = "If the department could not be found")
-	// FIXME I don't think PermitAll should be required here
-	@PermitAll
-	public Response update(@Context UriInfo uriInfo, @Valid Department department) {
+	public Response update(@Valid Department department) {
 		System.out.format(">>> update(%d)%n", department.getId());
 		List<Employee> employees = department.getEmployees();
 		if (employees != null && !employees.isEmpty()) {
 			employees.forEach(emp -> emp.setDepartment(department));
 		}
-		Department dept = departmentService.update(department);
-		// FIXME PUT should return no content
-		return Response.ok(dept).location(createLocation(uriInfo, department)).build();
+		departmentService.update(department);
+		return Response.noContent().build();
 	}
 
 	@DELETE
@@ -113,7 +99,6 @@ public class DepartmentResource {
 	@Operation(summary = "Delete a department")
 	@APIResponse(responseCode = "204", description = "If the delete was successful")
 	@APIResponse(responseCode = "404", description = "If the department could not be found")
-	@PermitAll
 	public Response delete(@PathParam("id") int id) {
 		System.out.format(">>> delete(%d)%n", Integer.valueOf(id));
 
@@ -124,20 +109,26 @@ public class DepartmentResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("{id}/employee")
-	// FIXME I don't think PermitAll should be required here
-	@PermitAll
 	public Response addEmploye(@PathParam("id") int departmentId, @Valid Employee employee) {
 		System.out.format(">>> addEmploye(%d, %s)%n", Integer.valueOf(departmentId), employee.getName());
 		departmentService.addEmploye(departmentId, employee);
 		return Response.noContent().build();
 	}
 
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("{id}/employee")
+	public Response updateEmploye(@PathParam("id") int departmentId, @Valid Employee employee) {
+		System.out.format(">>> updateEmploye(%d, %s)%n", Integer.valueOf(departmentId), employee.getName());
+		departmentService.addEmploye(departmentId, employee);
+		return Response.noContent().build();
+	}
+
 	@DELETE
 	@Path("{did}/employee/{eid}")
-	// FIXME I don't think PermitAll should be required here
-	@Operation(summary = "Delete a department")
+	@Operation(summary = "Delete an employee")
 	@APIResponse(responseCode = "204", description = "If the delete was successful")
-	@PermitAll
+	@APIResponse(responseCode = "404", description = "If either the department or employee could not be found")
 	public Response removeEmployee(@PathParam("did") int departmentId, @PathParam("eid") int employeeId) {
 		System.out.format(">>> removeEmployee(5d, %d)%n", Integer.valueOf(departmentId), Integer.valueOf(employeeId));
 		departmentService.removeEmployee(departmentId, employeeId);

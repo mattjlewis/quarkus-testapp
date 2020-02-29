@@ -22,4 +22,26 @@
         <button type="button" class="btn btn-warning" (click)="goBack()">Go back</button>
     </form>
 
+    <div *ngIf="department.employees && department.employees.length > 0">
+        <h3>Employees</h3>
+        <table class="table table-dark table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email Address</th>
+                    <th scope="col">Favourite Drink</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let employee of department.employees">
+                    <th scope="row">{{employee.id}}</th>
+                    <td>{{employee.name}}</td>
+                    <td>{{employee.emailAddress}}</td>
+                    <td>{{employee.favouriteDrink}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>

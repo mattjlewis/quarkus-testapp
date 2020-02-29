@@ -113,12 +113,8 @@ public class RestAssuredDepartmentResourceTest {
 		response = given().body(found_dept)
 				.contentType(MediaType.APPLICATION_JSON).when().basePath("rest").put(DEPARTMENT_PATH);
 		System.out.println("Called update.");
-		response.then().statusCode(HttpURLConnection.HTTP_OK);
+		response.then().statusCode(HttpURLConnection.HTTP_NO_CONTENT);
 		System.out.println("After status check");
-		Department updated_dept = response.as(Department.class);
-		assertNotNull(updated_dept);
-		assertEquals(dept.getName() + " - updated", updated_dept.getName());
-		assertEquals(found_dept.getVersion().intValue() + 1, updated_dept.getVersion().intValue());
 
 		// Should trigger bean validation failure
 		dept = new Department("012345678901234567890123456789", "London");

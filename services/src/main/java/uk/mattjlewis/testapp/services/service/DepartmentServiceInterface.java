@@ -24,5 +24,7 @@ public interface DepartmentServiceInterface {
 
 	void addEmploye(int departmentId, Employee employee);
 
+	void updateEmployee(int departmentId, Employee employee);
+
 	void removeEmployee(int departmentId, int employeeId);
 }
