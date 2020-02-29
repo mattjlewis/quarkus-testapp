@@ -1,29 +1,28 @@
-# quarkus-testapp-project project
+# Quarkus Test Application project
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
 
-## Running the application in dev mode
+## Running the Application in Dev Mode
 
-You can run your application in dev mode that enables live coding using:
+Start the REST services:
 ```
-./mvnw quarkus:dev
+cd services
+mvn quarkus:dev
+```
+Package and run the Angular User Interface:
+```
+cd ui
+./package.sh
+mvn quarkus:dev
 ```
 
-## Packaging and running the application
+## Creating a Native Executable
 
-The application is packageable using `./mvnw package`.
-It produces the executable `quarkus-testapp-project-1.0.0-SNAPSHOT-runner.jar` file in `/target` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/lib` directory.
+You can create a native executable using: `mvn package -Pnative`.
 
-The application is now runnable using `java -jar target/quarkus-testapp-project-1.0.0-SNAPSHOT-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using: `./mvnw package -Pnative`.
-
-Or you can use Docker to build the native executable using: `./mvnw package -Pnative -Dquarkus.native.container-build=true`.
+Or you can use Docker to build the native executable using: `mvn package -Pnative -Dquarkus.native.container-build=true`.
 
 You can then execute your binary: `./target/quarkus-testapp-project-1.0.0-SNAPSHOT-runner`
 
