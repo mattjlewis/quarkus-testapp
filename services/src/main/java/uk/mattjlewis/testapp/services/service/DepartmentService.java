@@ -57,6 +57,13 @@ public class DepartmentService implements DepartmentServiceInterface {
 	}
 
 	@Override
+	@Transactional(Transactional.TxType.SUPPORTS)
+	public List<Department> search(String name) {
+		return entityManager.createNamedQuery("Department.searchByName", Department.class).setParameter("name", name)
+				.getResultList();
+	}
+
+	@Override
 	@Transactional(Transactional.TxType.REQUIRES_NEW)
 	public Department update(final Department department) {
 		//return BaseEntityRepository.update(entityManager, department.getId(), department);

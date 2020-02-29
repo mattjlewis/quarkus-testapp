@@ -22,6 +22,8 @@ import javax.validation.constraints.Size;
 @Access(AccessType.FIELD)
 @Entity(name = "Department")
 @NamedQuery(name = "Department.findByName", query = "SELECT d FROM Department d WHERE d.name = :name")
+@NamedQuery(name = "Department.searchByName",
+		query = "SELECT d FROM Department d WHERE lower(d.name) LIKE concat('%', lower(:name), '%')")
 @SequenceGenerator(name = "DepartmentSeq", sequenceName = "DEPARTMENT_SEQ")
 @Table(name = "DEPARTMENT")
 public class Department extends BaseEntity {

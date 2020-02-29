@@ -16,6 +16,8 @@ public interface DepartmentServiceInterface {
 
 	Department findByName(final String name);
 
+	List<Department> search(String name);
+
 	Department update(final Department department);
 
 	void delete(int id);

@@ -15,6 +15,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -49,7 +50,7 @@ public class DepartmentResource {
 	@PermitAll
 	public Response create(@Context UriInfo uriInfo,
 			@Valid @Parameter(schema = @Schema(implementation = Department.class)) Department department) {
-		System.out.println(">>> create()");
+		System.out.format(">>> create(%s)%n", department.getName());
 
 		testValidateDepartmentData(department);
 
@@ -58,8 +59,16 @@ public class DepartmentResource {
 	}
 
 	@GET
-	public Response getAll() {
-		System.out.println(">>> getAll()");
+	@Operation(summary = "Get all departments with optional search parameter")
+	@APIResponse(responseCode = "200",
+			description = "All departments",
+			content = @Content(mediaType = MediaType.APPLICATION_JSON,
+					schema = @Schema(type = SchemaType.ARRAY, implementation = Department.class)))
+	public Response getAll(@QueryParam("name") String name) {
+		System.out.format(">>> getAll(%s)%n", name);
+		if (name != null && !name.isBlank()) {
+			return Response.ok(departmentService.search(name)).build();
+		}
 		return Response.ok(departmentService.getAll()).build();
 	}
 
@@ -70,10 +79,11 @@ public class DepartmentResource {
 			description = "The department instance",
 			content = @Content(mediaType = MediaType.APPLICATION_JSON,
 					schema = @Schema(type = SchemaType.OBJECT, implementation = Department.class)))
+	@APIResponse(responseCode = "404", description = "If the department could not be found")
 	// FIXME I don't think PermitAll should be required here
 	@PermitAll
 	public Response get(@PathParam("id") int id) {
-		System.out.println(">>> get()");
+		System.out.format(">>> get(%d)%n", Integer.valueOf(id));
 		return Response.ok(departmentService.get(id)).build();
 	}
 
@@ -84,22 +94,28 @@ public class DepartmentResource {
 			description = "The department instance",
 			content = @Content(mediaType = MediaType.APPLICATION_JSON,
 					schema = @Schema(type = SchemaType.OBJECT, implementation = Department.class)))
+	@APIResponse(responseCode = "404", description = "If the department could not be found")
 	// FIXME I don't think PermitAll should be required here
 	@PermitAll
 	public Response update(@Context UriInfo uriInfo, @Valid Department department) {
-		System.out.println(">>> update()");
+		System.out.format(">>> update(%d)%n", department.getId());
 		List<Employee> employees = department.getEmployees();
 		if (employees != null && !employees.isEmpty()) {
 			employees.forEach(emp -> emp.setDepartment(department));
 		}
 		Department dept = departmentService.update(department);
+		// FIXME PUT should return no content
 		return Response.ok(dept).location(createLocation(uriInfo, department)).build();
 	}
 
 	@DELETE
 	@Path("{id}")
+	@Operation(summary = "Delete a department")
+	@APIResponse(responseCode = "204", description = "If the delete was successful")
+	@APIResponse(responseCode = "404", description = "If the department could not be found")
+	@PermitAll
 	public Response delete(@PathParam("id") int id) {
-		System.out.println(">>> delete()");
+		System.out.format(">>> delete(%d)%n", Integer.valueOf(id));
 
 		departmentService.delete(id);
 		return Response.noContent().build();
@@ -111,7 +127,7 @@ public class DepartmentResource {
 	// FIXME I don't think PermitAll should be required here
 	@PermitAll
 	public Response addEmploye(@PathParam("id") int departmentId, @Valid Employee employee) {
-		System.out.println(">>> addEmploye()");
+		System.out.format(">>> addEmploye(%d, %s)%n", Integer.valueOf(departmentId), employee.getName());
 		departmentService.addEmploye(departmentId, employee);
 		return Response.noContent().build();
 	}
@@ -119,9 +135,11 @@ public class DepartmentResource {
 	@DELETE
 	@Path("{did}/employee/{eid}")
 	// FIXME I don't think PermitAll should be required here
+	@Operation(summary = "Delete a department")
+	@APIResponse(responseCode = "204", description = "If the delete was successful")
 	@PermitAll
 	public Response removeEmployee(@PathParam("did") int departmentId, @PathParam("eid") int employeeId) {
-		System.out.println(">>> removeEmployee()");
+		System.out.format(">>> removeEmployee(5d, %d)%n", Integer.valueOf(departmentId), Integer.valueOf(employeeId));
 		departmentService.removeEmployee(departmentId, employeeId);
 		return Response.noContent().build();
 	}
