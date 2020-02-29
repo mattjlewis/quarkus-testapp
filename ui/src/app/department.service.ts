@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { MessageService } from './message.service';
 import { Department } from './model';
@@ -59,13 +60,27 @@ export class DepartmentService {
       );
   }
 
-  /** DELETE: delete the hero from the server */
+  /** DELETE: delete the department from the server */
   deleteDepartment(department: Department | number): Observable<Department> {
     const id = typeof department === 'number' ? department : department.id;
 
     return this.http.delete<Department>(`${DepartmentService.DEPARTMENT_URL}/${id}`).pipe(
       tap(_ => this.log(`Deleted department ${id}`)),
       catchError(this.handleError<Department>('deleteDepartment'))
+    );
+  }
+
+  /* GET departments whose name contains search term */
+  searchDepartments(term: string): Observable<Department[]> {
+    if (!term.trim()) {
+      // if not search term, return empty department array.
+      return of([]);
+    }
+    return this.http.get<Department[]>(`${DepartmentService.DEPARTMENT_URL}/?name=${term}`).pipe(
+      tap(x => x.length ?
+        this.log(`found departments matching "${term}"`) :
+        this.log(`no departments matching "${term}"`)),
+      catchError(this.handleError<Department[]>('searchDepartments', []))
     );
   }
 

@@ -2,16 +2,24 @@
 
     <h2>{{department.name}} Details</h2>
     <div><span>Id: </span>{{department.id}}</div>
-    <div>
-        <label for="name">Name:</label>
-        <input id="name" [(ngModel)]="department.name" placeholder="Name" />
-    </div>
-    <div>
-        <label for="location">Location:</label>
-        <input id="location" [(ngModel)]="department.location" placeholder="Location" />
-    </div>
+    <form (ngSubmit)="onSubmit()" #departmentForm="ngForm">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input id="name" type="text" class="form-control" placeholder="Name" required [(ngModel)]="department.name" name="name" #name="ngModel" />
+            <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+                Name is required
+            </div>
+        </div>
+        <div>
+            <label for="location">Location:</label>
+            <input id="location" type="text" class="form-control" placeholder="Location" required [(ngModel)]="department.location" name="location" #location="ngModel" />
+            <div [hidden]="location.valid || location.pristine" class="alert alert-danger">
+                Location is required
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="!departmentForm.form.valid">Save</button>
+        <button type="button" class="btn btn-warning" (click)="goBack()">Go back</button>
+    </form>
 
 </div>
-
-<button (click)="save()">Save</button>
-<button (click)="goBack()">Go back</button>

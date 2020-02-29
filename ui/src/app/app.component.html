@@ -1,6 +1,18 @@
-<h1>{{title}}</h1>
-<nav>
-  <a routerLink="/departments">Departments</a>
-</nav>
-<router-outlet></router-outlet>
-<app-messages></app-messages>
+
+<header class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+  <div class="navbar-nav-scroll">
+    <ul class="navbar-nav">
+      <li class="nav-item"><a class="nav-link" routerLink="/departments">Departments</a></li>
+    </ul>
+  </div>
+</header>
+
+<div class="container">
+
+  <h1>{{title}}</h1>
+
+  <router-outlet></router-outlet>
+
+  <app-messages></app-messages>
+
+</div>

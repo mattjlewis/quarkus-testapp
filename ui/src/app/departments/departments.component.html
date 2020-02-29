@@ -1,23 +1,27 @@
 <h2>Departments</h2>
 
-<ul class="departments">
+<ul>
     <li *ngFor="let department of departments">
         <a routerLink="/department/{{department.id}}">
-            <span class="badge">{{department.id}}</span> {{department.name}} - {{department.location}}
+            <span class="badge badge-primary">{{department.id}}</span> {{department.name}} - {{department.location}}
         </a>
-        <button class="delete" title="Delete" (click)="delete(department)">x</button>
+        <button type="button" class="btn btn-sm btn-danger" title="Delete" (click)="delete(department)">X</button>
     </li>
 </ul>
 
+<app-department-search></app-department-search>
+
 <div>
-    <div>
-        <label for="name">Name:</label>
-        <input id="name" #departmentName placeholder="Name" />
-    </div>
-    <div>
-        <label for="location">Location:</label>
-        <input id="location" #departmentLocation placeholder="Location" />
-    </div>
-    <!-- (click) passes input value to add() and then clears the input -->
-    <button (click)="add(departmentName.value, departmentLocation.value); departmentName.value=''; departmentLocation.value=''">Add</button>
+    <form>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input id="name" type="text" class="form-control" required placeholder="Name" #departmentName />
+        </div>
+        <div class="form-group">
+            <label for="location">Location:</label>
+            <input id="location" type="text" class="form-control" required placeholder="Location" #departmentLocation />
+        </div>
+        <!-- (click) passes input value to add() and then clears the input -->
+        <button type="submit" class="btn btn-success" (click)="add(departmentName.value, departmentLocation.value); departmentName.value=''; departmentLocation.value=''">Add</button>
+    </form>
 </div>

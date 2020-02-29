@@ -25,6 +25,7 @@ export class DepartmentDetailComponent implements OnInit {
 
   getDepartment(): void {
     const id = +this.route.snapshot.paramMap.get('id');
+    console.log(`getDepartment() id= ${id}`);
     this.departmentService.getDepartment(id).subscribe(department => this.department = department);
   }
 
@@ -32,8 +33,8 @@ export class DepartmentDetailComponent implements OnInit {
     this.location.back();
   }
 
-  save(): void {
-   this.departmentService.updateDepartment(this.department)
-     .subscribe(() => this.goBack());
+  onSubmit(): void {
+    this.departmentService.updateDepartment(this.department)
+      .subscribe(() => this.goBack());
   }
 }

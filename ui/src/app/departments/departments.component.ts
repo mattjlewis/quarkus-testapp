@@ -17,19 +17,18 @@ export class DepartmentsComponent implements OnInit {
     this.departmentService.getDepartments().subscribe(departments => this.departments = departments);
   }
 
-  add(name: string, location: string): void {
-    name = name.trim();
-    location = location.trim();
-    if (!name) {
+  add(dName: string, dLocation: string): void {
+    dName = dName.trim();
+    dLocation = dLocation.trim();
+    if (!dName) {
       return;
     }
-    this.departmentService.createDepartment({ name: name, location: location} as Department)
+    this.departmentService.createDepartment({ name: dName, location: dLocation } as Department)
       .subscribe(department => this.departments.push(department));
   }
-  
- 
+
   delete(department: Department): void {
-    this.departments = this.departments.filter(dept => dept != department);
+    this.departments = this.departments.filter(dept => dept !== department);
     this.departmentService.deleteDepartment(department).subscribe();
   }
 }

@@ -8,13 +8,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { DepartmentsComponent } from './departments/departments.component';
 import { DepartmentDetailComponent } from './department-detail/department-detail.component';
 import { MessagesComponent } from './messages/messages.component';
+import { DepartmentSearchComponent } from './department-search/department-search.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DepartmentsComponent,
     DepartmentDetailComponent,
-    MessagesComponent
+    MessagesComponent,
+    DepartmentSearchComponent
   ],
   imports: [
     BrowserModule,

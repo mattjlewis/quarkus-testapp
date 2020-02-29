@@ -1,0 +1,10 @@
+<div class="form-inline">
+    <label class="form-label" for="search-box">Search: </label>
+    <input id="search-box" type="text" class="form-control" #searchBox (input)="search(searchBox.value)" />
+</div>
+
+<ul>
+    <li *ngFor="let department of departments$ | async">
+        <a routerLink="/department/{{department.id}}">{{department.name}}</a>
+    </li>
+</ul>
